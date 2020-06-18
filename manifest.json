@@ -1,0 +1,7 @@
+{
+  "name": "curso",
+  "short_name": "curso",
+  "description": "Pruebas del curso",
+  "start_url": "/",
+  "display": "standalone"
+}
