@@ -1,20 +1,49 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+<!DOCTYPE html>
 
-    <title>curso</title>
-    <meta name="description" content="Pruebas del curso">
+<html lang="es">
+<head>
+  <!-- Register service worker if supported. -->
+  <!--
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/service-worker.js');
+    }
+  </script>
+  -->
+  
+  <!-- Load polyfills -->
+  <script 
+    src="node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"
+    defer>
+  </script> 
 
-    <!-- See https://goo.gl/OOhYW5 -->
-    <link rel="manifest" href="/manifest.json">
+  <!-- Load components via WebComponents.waitFor -->
+  <script type="module">
+    window.WebComponents = window.WebComponents || { 
+      waitFor(cb){ addEventListener('WebComponentsReady', cb) }
+    } 
+    WebComponents.waitFor(async () => { 
+      import('./src/sistema-votacion.js');
+    });
+  </script>
+  
+  <!-- Change stuff here for your app -->
+  <meta name="description" content="start-lit-element">
+  <meta name="theme-color" content="#ffffff">
+  <title>start-lit-element</title>
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="manifest" href="./manifest.json">
+  <link rel="shortcut icon" href="/manifest/favicon.ico">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta charset="UTF-8">
+</head>
+<body>
 
-    <script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
-
-    <script type="module" src="/src/curso-app/curso-app.js" crossorigin></script>
-  </head>
-  <body>
-    <curso-app></curso-app>
-  </body>
-</html>
+  <sistema-votacion>
+    <noscript>
+      Could not render the custom element. Check that JavaScript is enabled.
+    </noscript>
+  </sistema-votacion>
+  
+</body>
