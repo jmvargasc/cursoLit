@@ -42,7 +42,7 @@ class ViewHome extends LitElement {
       <link rel="stylesheet" href="./src/lib/bootstrap/css/bootstrap.min.css" />
       <script src="./src/lib/jquery/jquery-3.5.1.min.js"></script>
       <script src="./src/lib/bootstrap/js/bootstrap.min.js"></script>
-      <primeros-lugares primer="${this.lugares.primero}"></primeros-lugares>
+      <primeros-lugares id="primerosLugares"></primeros-lugares>
         ${this.persons.map(
           (todo) =>
             html`
@@ -107,18 +107,22 @@ class ViewHome extends LitElement {
   updated(changedProps) {
     super.updated(changedProps);
     let per = [];
-    for (let i = 0; i < this.persons.length; i++) {
-      per.push(this.persons[i]);
-    }
-    console.log("per", per);
-    let gu = this.ordenarAsc(per, "votos");
-    console.log("asasd", gu);
-    this.lugares.primero = gu[0].name.first;
+    //for (let i = 0; i < this.persons.length; i++) {
+    // per.push(this.persons[i]);
+    //}
+    //console.log("per", per);
+    //let gu = this.ordenarAsc(per, "votos");
+    //console.log("asasd", gu);
+    //this.lugares.primero = gu[0].name.first;
     return true;
   }
   disconnectedCallback() {
     console.log("disconnected!");
     console.log(this.shadowRoot.querySelector("ul"));
+  }
+  attributeChangedCallback(name, oldValue, newValue) {
+    console.log("Custom home", name);
+    updateStyle(this);
   }
   ordenarAsc(p_array_json, p_key) {
     p_array_json.sort(function (a, b) {
@@ -150,13 +154,16 @@ class ViewHome extends LitElement {
     this.votos = parseInt(voto[0]);
     this.votos++;
     let per = [];
+
     for (let i = 0; i < this.persons.length; i++) {
       per.push(this.persons[i]);
     }
     console.log("per", per);
-    let gu = this.ordenarAsc(per, "votos");
-    console.log("asasd", gu);
-    this.lugares.primero = gu[0].name.first;
+    //let gu = this.ordenarAsc(per, "votos");
+    //console.log("asasd", gu);
+    // this.lugares.primero = gu[0].name.first;
+
+    this.shadowRoot.getElementById("primerosLugares").updateLugares(per);
   }
   lessVoto(e) {
     e.preventDefault();
@@ -173,6 +180,17 @@ class ViewHome extends LitElement {
     if (this.votos > 0) {
       this.votos--;
     }
+    let per = [];
+
+    for (let i = 0; i < this.persons.length; i++) {
+      per.push(this.persons[i]);
+    }
+    console.log("per", per);
+    //let gu = this.ordenarAsc(per, "votos");
+    //console.log("asasd", gu);
+    // this.lugares.primero = gu[0].name.first;
+
+    this.shadowRoot.getElementById("primerosLugares").updateLugares(per);
   }
 }
 customElements.define("view-home", ViewHome);
