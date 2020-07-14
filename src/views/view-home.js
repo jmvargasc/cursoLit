@@ -42,14 +42,20 @@ class ViewHome extends LitElement {
       <link rel="stylesheet" href="./src/lib/bootstrap/css/bootstrap.min.css" />
       <script src="./src/lib/jquery/jquery-3.5.1.min.js"></script>
       <script src="./src/lib/bootstrap/js/bootstrap.min.js"></script>
+      
       <primeros-lugares id="primerosLugares"></primeros-lugares>
+      <div  id="loading" class="text-center loading1"></div>
         ${this.persons.map(
           (todo) =>
             html`
               <div class="card mb-3" style="max-width: 540px;    margin: auto">
-                <div class="row no-gutters">
+                <div class="row no-gutters contenedorCards">
                   <div class="col-md-2">
-                    <img src="${todo.picture.thumbnail}" alt="..." />
+                    <img
+                      class="fotoPerfil rounded-pill"
+                      src="${todo.picture.thumbnail}"
+                      alt="..."
+                    />
                   </div>
                   <div class="col-md-6">
                     <div class="card-body">
@@ -92,9 +98,9 @@ class ViewHome extends LitElement {
     const URL = "https://randomuser.me/api/?results=10.";
     let pero = Http.fetchData(URL)
       .then((response) => {
-        console.log("response dentro", response);
         this.persons = response.results;
         console.log("response dentro", this.persons);
+        this.shadowRoot.querySelector("#loading").style.display = "none";
       })
       .catch((e) => console.log("ocurrio un error", e));
     console.log("should update!", pero);

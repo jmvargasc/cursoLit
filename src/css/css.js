@@ -50,4 +50,24 @@ export const ESTILOS_PAGE_PRINCIPAL = css`
   .votar {
     margin-top: 10px;
   }
+  .fotoPerfil {
+    margin: 5px;
+  }
+  .contenedorCards:hover {
+    background: #b4b3b3;
+    color: #fff;
+  }
+  .loading1 {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(192, 192, 192, 0.5);
+    background-image: url("./src/assets/image/loading.gif");
+    background-repeat: no-repeat;
+    background-position: center;
+  }
 `;

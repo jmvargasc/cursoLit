@@ -8,6 +8,7 @@ export class PrimerosLugares extends LitElement {
       segundoLugar: { type: String },
       tercerLugar: { type: String },
       personas: { type: Array },
+      card: { type: String },
     };
   }
   constructor() {
@@ -16,6 +17,7 @@ export class PrimerosLugares extends LitElement {
     this.segundoLugar = "";
     this.tercerLugar = "";
     this.personas = [];
+    this.vista = "card";
   }
   static get styles() {
     return [
@@ -34,13 +36,20 @@ export class PrimerosLugares extends LitElement {
     let consulta = alasql("select * from ?  ORDER BY votos desc", [
       this.personas,
     ]);
+    let votos = alasql("SELECT SUM(votos) AS TotalVotos FROM ?", [
+      this.personas,
+    ]);
 
     //let consulta = this.ordenarAsc(this.personas);
 
-    if (consulta.length > 0) {
-      this.primer = consulta[0].name.first;
-      this.segundoLugar = consulta[1].name.first;
-      this.tercerLugar = consulta[2].name.first;
+    if (consulta.length > 0 && votos[0].TotalVotos > 0) {
+      this.primer = consulta[0].name.first + " " + consulta[0].name.last;
+      this.segundoLugar = consulta[1].name.first + " " + consulta[1].name.last;
+      this.tercerLugar = consulta[2].name.first + " " + consulta[2].name.last;
+    } else {
+      this.primer = "";
+      this.segundoLugar = "";
+      this.tercerLugar = "";
     }
 
     console.log("consulta en update", consulta);
@@ -49,38 +58,43 @@ export class PrimerosLugares extends LitElement {
   render() {
     return html`
       <link rel="stylesheet" href="./src/lib/bootstrap/css/bootstrap.min.css" />
+      <script src="./src/lib/bootstrap/js/bootstrap.min.js"></script>
       <script src="./src/lib/jquery/jquery-3.5.1.min.js"></script>
 
-      <script src="./src/lib/bootstrap/js/bootstrap.min.js"></script>
-      <div class="card mb-3" style="max-width: 540px;    margin: auto">
-        <div class="row no-gutters">
-          <div class="col-md-12">
-            <div class="card-body col-md-12">
-              <p
-                class="card-text col-md-12"
-                id="status"
-                style="text-align: center; margin-bottom: 7px;"
-              >
-                ${this.primer}
-              </p>
-              <p
-                class="card-text col-md-6"
-                id="status"
-                style="text-align: center;float: left;"
-              >
-                ${this.segundoLugar}
-              </p>
-              <p
-                class="card-text col-md-6"
-                id="status"
-                style="text-align: center;float: left;"
-              >
-                ${this.tercerLugar}
-              </p>
+      ${this.vista == "card"
+        ? html` <div
+            class="card mb-3 border-top  border-primary"
+            style="max-width: 540px;    margin: auto"
+          >
+            <div class="row no-gutters">
+              <div class="col-md-12">
+                <div class="card-body col-md-12">
+                  <p
+                    class="card-text col-md-12"
+                    id="status"
+                    style="text-align: center; margin-bottom: 7px;"
+                  >
+                    ${this.primer}
+                  </p>
+                  <p
+                    class="card-text col-md-6 font-weight-bolder"
+                    id="status"
+                    style="text-align: center;float: left;"
+                  >
+                    ${this.segundoLugar}
+                  </p>
+                  <p
+                    class="card-text col-md-6 font-weight-bolder"
+                    id="status"
+                    style="text-align: center;float: left;"
+                  >
+                    ${this.tercerLugar}
+                  </p>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-      </div>
+          </div>`
+        : html``}
     `;
   }
 
@@ -118,6 +132,12 @@ export class PrimerosLugares extends LitElement {
       return b.votos - a.votos;
     });
     return p_array_json;
+  }
+  updateModal() {
+    console.log(
+      "shadoroor1",
+      (this.shadowRoot.querySelector("#mimodal").active = true)
+    );
   }
 }
 customElements.define("primeros-lugares", PrimerosLugares);
